@@ -19,7 +19,6 @@ public class Livro {
 
     private Tamanho tamanho;
 
-    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "categoria_id")
     private Categoria categoria;
