@@ -1,6 +1,7 @@
 package com.fuctura.bibliotecaSab.controllers;
 
 import com.fuctura.bibliotecaSab.dtos.CategoriaDto;
+import com.fuctura.bibliotecaSab.dtos.CategoriaDtoNome;
 import com.fuctura.bibliotecaSab.models.Categoria;
 import com.fuctura.bibliotecaSab.services.CategoriaService;
 import org.modelmapper.ModelMapper;
@@ -9,6 +10,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("/categoria")
@@ -30,31 +32,39 @@ public class CategoriaController {
     public ResponseEntity<CategoriaDto> findById(@PathVariable Integer id) {
         Categoria cat = categoriaService.findById(id);
         CategoriaDto catDto = modelMapper.map(cat, CategoriaDto.class);
+
         return ResponseEntity.ok().body(catDto);
     }
 
-    @GetMapping
-    public List<Categoria> findAll() {
+    @GetMapping(value = "/nome")
+    public ResponseEntity<List<CategoriaDtoNome>> findAllByNome() {
         List<Categoria> list = categoriaService.findAll();
-        return list;
+        return ResponseEntity.ok().body(list.stream().map(obj -> modelMapper.map(obj, CategoriaDtoNome.class)).collect(Collectors.toList()));
+    }
+
+    @GetMapping
+    public ResponseEntity<List<CategoriaDto>> findAll() {
+        List<Categoria> list = categoriaService.findAll();
+        return ResponseEntity.ok().body(list.stream().map(obj -> modelMapper.map(obj, CategoriaDto.class)).collect(Collectors.toList()));
     }
 
     @PostMapping
-    public Categoria save(@RequestBody Categoria categoria) {
-        Categoria cat = categoriaService.save(categoria);
-        return cat;
+    public ResponseEntity<CategoriaDto> save(@RequestBody CategoriaDto categoriaDto) {
+        Categoria cat = categoriaService.save(categoriaDto);
+        return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDto.class));
     }
 
     @PutMapping("/{id}")
-    public Categoria update(@PathVariable Integer id, @RequestBody Categoria categoria) {
-        categoria.setId(id);
-        Categoria cat = categoriaService.update(categoria);
-        return cat;
+    public ResponseEntity<CategoriaDto> update(@PathVariable Integer id, @RequestBody CategoriaDto categoriaDto) {
+        categoriaDto.setId(id);
+        Categoria cat = categoriaService.update(categoriaDto);
+        return ResponseEntity.ok().body(modelMapper.map(cat, CategoriaDto.class));
     }
 
     @DeleteMapping("/{id}")
-    public void delete(@PathVariable Integer id) {
+    public ResponseEntity<Void> delete(@PathVariable Integer id) {
         categoriaService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
 }

@@ -1,5 +1,7 @@
 package com.fuctura.bibliotecaSab.dtos;
 
+import com.fuctura.bibliotecaSab.models.Categoria;
+
 public class CategoriaDto {
 
     private Integer id;
@@ -13,6 +15,12 @@ public class CategoriaDto {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
+    }
+
+    public CategoriaDto(Categoria categoria) {
+        this.id = categoria.getId();
+        this.nome = categoria.getNome();
+        this.descricao = categoria.getDescricao();
     }
 
     public Integer getId() {

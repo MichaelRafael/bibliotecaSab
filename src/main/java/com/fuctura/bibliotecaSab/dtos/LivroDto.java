@@ -1,33 +1,22 @@
-package com.fuctura.bibliotecaSab.models;
+package com.fuctura.bibliotecaSab.dtos;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fuctura.bibliotecaSab.dtos.LivroDto;
 import com.fuctura.bibliotecaSab.enuns.Tamanho;
+import com.fuctura.bibliotecaSab.models.Categoria;
+import com.fuctura.bibliotecaSab.models.Livro;
 
+public class LivroDto {
 
-import javax.persistence.*;
-
-@Entity
-@Table(name = "tb_livro")
-public class Livro {
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     private String nome;
     private String autor;
     private String texto;
-
     private Tamanho tamanho;
-
-    @ManyToOne
-    @JoinColumn(name = "categoria_id")
     private Categoria categoria;
 
-    public Livro() {
+    public LivroDto() {
     }
 
-    public Livro(Integer id, String nome, String autor, String texto, Tamanho tamanho, Categoria categoria) {
+    public LivroDto(Integer id, String nome, String autor, String texto, Tamanho tamanho, Categoria categoria) {
         this.id = id;
         this.nome = nome;
         this.autor = autor;
@@ -36,13 +25,13 @@ public class Livro {
         this.categoria = categoria;
     }
 
-    public Livro(LivroDto livroDto) {
-        this.id = livroDto.getId();
-        this.nome = livroDto.getNome();
-        this.autor = livroDto.getAutor();
-        this.texto = livroDto.getTexto();
-        this.tamanho = livroDto.getTamanho();
-        this.categoria = livroDto.getCategoria();
+    public LivroDto(Livro livro) {
+        this.id = livro.getId();
+        this.nome = livro.getNome();
+        this.autor = livro.getAutor();
+        this.texto = livro.getTexto();
+        this.tamanho = livro.getTamanho();
+        this.categoria = livro.getCategoria();
     }
 
     public Integer getId() {
